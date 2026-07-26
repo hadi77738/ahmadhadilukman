@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://ahmadhadilukman.vercel.app"),
   title: "Ahmad Hadi Lukmanul Hakim | Web Profile & Portfolio",
   description: "Portofolio profesional Ahmad Hadi Lukmanul Hakim - Junior Software Developer & IT Support Specialist (S1 Teknik Informatika UNIMUS, IPK 3.76).",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   keywords: [
     "Ahmad Hadi Lukmanul Hakim",
     "Portofolio",
