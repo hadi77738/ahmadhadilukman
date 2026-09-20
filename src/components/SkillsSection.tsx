@@ -119,7 +119,7 @@ export function SkillsSection() {
               placeholder="Cari skill atau tool..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9.5 pr-4 py-2 text-xs rounded-xl bg-white dark:bg-dark-card border border-light-border dark:border-dark-border text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+              className="w-full pl-10 pr-4 py-2 text-xs rounded-xl bg-white dark:bg-dark-card border border-light-border dark:border-dark-border text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
             />
           </div>
         </div>
