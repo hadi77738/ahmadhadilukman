@@ -17,21 +17,33 @@ export function ParticleBackground() {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Soft Ambient Radial Light */}
+      {/* Top primary ambient light orb */}
       <div
-        className={`absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[450px] rounded-full blur-[140px] transition-all duration-700 ${
+        className={`absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[500px] rounded-full blur-[140px] transition-all duration-700 pointer-events-none ${
           isDark
-            ? "bg-blue-950/20"
-            : "bg-blue-100/50"
+            ? "bg-gradient-to-b from-blue-600/15 via-indigo-600/10 to-transparent"
+            : "bg-gradient-to-b from-blue-200/50 via-sky-100/40 to-transparent"
         }`}
       />
 
-      {/* Geometric Soft Grid Lines */}
+      {/* Secondary accent orb on right */}
       <div
-        className={`absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:36px_36px] ${
-          isDark ? "opacity-30" : "opacity-40"
+        className={`absolute top-1/3 -right-40 w-[450px] h-[450px] rounded-full blur-[160px] transition-all duration-700 pointer-events-none ${
+          isDark
+            ? "bg-cyan-600/10"
+            : "bg-blue-100/40"
+        }`}
+      />
+
+      {/* Subtle geometric dot matrix */}
+      <div
+        className={`absolute inset-0 transition-opacity duration-500 ${
+          isDark
+            ? "opacity-20 [background-image:radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:32px_32px]"
+            : "opacity-35 [background-image:radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:32px_32px]"
         }`}
       />
     </div>
   );
 }
+

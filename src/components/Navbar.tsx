@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Send } from "lucide-react";
+import { Menu, X, Send, Sparkles, Download, ArrowUpRight } from "lucide-react";
 import { personalDetails } from "@/data/portfolioData";
 
 const navLinks = [
@@ -18,79 +18,107 @@ const navLinks = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 25);
+
+      const sections = navLinks.map((l) => l.href.substring(1));
+      const scrollPosition = window.scrollY + 200;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const top = element.offsetTop;
+          const height = element.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/90 dark:bg-dark-surface/90 backdrop-blur-md border-b border-slate-200/80 dark:border-dark-border shadow-sm py-3"
-          : "bg-transparent py-5"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-4 sm:px-6 pt-4">
+      <div
+        className={`max-w-6xl mx-auto rounded-full transition-all duration-300 px-4 sm:px-6 py-2.5 sm:py-3 ${
+          scrolled
+            ? "glass-panel shadow-lg shadow-black/5 dark:shadow-black/20"
+            : "bg-white/40 dark:bg-dark-surface/40 backdrop-blur-md border border-light-border/60 dark:border-dark-border/60"
+        }`}
+      >
         <div className="flex items-center justify-between">
-          
-          {/* Logo with profile photo thumbnail */}
+          {/* Brand Logo & Avatar */}
           <a href="#" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-brand-blue dark:border-blue-500 shadow-sm group-hover:scale-105 transition-transform duration-300">
-              <img
-                src="/me.jpg"
-                alt={personalDetails.fullName}
-                className="w-full h-full object-cover object-center"
-              />
+            <div className="relative">
+              <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-brand-500/30 dark:ring-blue-400/40 group-hover:ring-brand-500 transition-all duration-300 shadow-sm">
+                <img
+                  src="/me.jpg"
+                  alt={personalDetails.fullName}
+                  className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white dark:border-dark-surface rounded-full"></span>
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-tight text-base group-hover:text-brand-blue dark:group-hover:text-blue-400 transition-colors">
+              <span className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 tracking-tight leading-tight group-hover:text-brand-500 dark:group-hover:text-blue-400 transition-colors">
                 {personalDetails.shortName}
               </span>
-              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                IT & Software Dev
+              <span className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1">
+                <span>IT & Dev</span>
+                <span className="inline-block w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Available</span>
               </span>
             </div>
           </a>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-dark-card/90 p-1.5 rounded-full border border-slate-200/80 dark:border-dark-border backdrop-blur-md">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-4 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 rounded-full hover:bg-white dark:hover:bg-dark-surface transition-all duration-200"
-              >
-                {link.name}
-              </a>
-            ))}
+          {/* Desktop Nav Items */}
+          <nav className="hidden lg:flex items-center gap-1 bg-slate-100/60 dark:bg-dark-card/60 p-1 rounded-full border border-light-border/60 dark:border-dark-border/60">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.substring(1);
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`relative px-4 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 ${
+                    isActive
+                      ? "text-brand-600 dark:text-blue-400 bg-white dark:bg-dark-surface shadow-xs"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-dark-surface/50"
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
           </nav>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-3">
+          {/* Right Action Tools */}
+          <div className="flex items-center gap-2.5">
             <ThemeToggle />
 
             <a
               href={personalDetails.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold text-white bg-brand-blue hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 shadow-sm hover:shadow transition-all duration-200"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 shadow-sm hover:shadow-md hover:shadow-brand-500/20 active:scale-95 transition-all duration-200"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>Hubungi Saya</span>
+              <span>Hubungi</span>
             </a>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-card transition-colors"
-              aria-label="Toggle menu"
+              className="lg:hidden p-2 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-card transition-colors"
+              aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -100,32 +128,35 @@ export function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b border-slate-200 dark:border-dark-border bg-white/95 dark:bg-dark-surface/95 backdrop-blur-xl overflow-hidden"
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="lg:hidden mt-3 max-w-6xl mx-auto glass-panel rounded-3xl p-5 shadow-xl"
           >
-            <div className="px-4 py-6 flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-dark-card rounded-xl transition-colors"
+                  className="flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-dark-card transition-all"
                 >
-                  {link.name}
+                  <span>{link.name}</span>
+                  <ArrowUpRight className="w-4 h-4 opacity-50" />
                 </a>
               ))}
-              <div className="pt-2 border-t border-slate-200 dark:border-dark-border">
+
+              <div className="pt-3 mt-1 border-t border-slate-200 dark:border-dark-border">
                 <a
                   href={personalDetails.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-white bg-brand-blue dark:bg-blue-600 shadow-sm"
+                  className="flex items-center justify-center gap-2 w-full py-3 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-brand-600 to-indigo-600"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Hubungi Saya Via WhatsApp</span>
+                  <span>Kirim Pesan WhatsApp</span>
                 </a>
               </div>
             </div>
